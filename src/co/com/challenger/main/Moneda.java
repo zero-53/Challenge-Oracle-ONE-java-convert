@@ -48,9 +48,13 @@ public class Moneda {
 	public void setIndex(int index) {
 		this.index = index;
 	}
-	
-	public double ConvToUSD(double valor) {
-		return valor * this.tasa;
+
+	public double ConvToUSD() {
+		double valor = 0;
+		if (!this.entrada.getText().equals("")) {
+			valor = Double.parseDouble(this.entrada.getText());
+		}
+		return valor / this.tasa;
 	}
 
 	public JTextField getEntrada() {
@@ -59,6 +63,12 @@ public class Moneda {
 
 	public void setEntrada(JTextField entrada) {
 		this.entrada = entrada;
+	}
+
+	@Override
+	public String toString() {
+		return "Moneda [tasa=" + tasa + ", codigo=" + codigo + ", nombre=" + nombre + ", index=" + index + ", entrada="
+				+ entrada + "]";
 	}
 
 }

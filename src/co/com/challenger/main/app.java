@@ -6,6 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.JPopupMenu;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.DecimalFormat;
+
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
@@ -26,6 +28,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import java.awt.event.KeyAdapter;
 
 public class app {
 
@@ -222,6 +225,18 @@ public class app {
 		gMoneda1Data.add(selectMoneda1);
 
 		ingresoMoneda1 = new JTextField();
+		ingresoMoneda1.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				String valor = moneda1.getEntrada().getText();
+				if (validNumber(valor)) {
+					convert(moneda1, moneda2);
+				} else {
+					valor = removeLastChar(valor);
+					moneda1.getEntrada().setText(valor);
+				}
+			}
+		});
 		ingresoMoneda1.setColumns(10);
 		moneda1.setEntrada(ingresoMoneda1);
 		gMoneda1Data.add(ingresoMoneda1);
@@ -236,6 +251,7 @@ public class app {
 
 		ingresoMoneda2 = new JTextField();
 		ingresoMoneda2.setColumns(10);
+		ingresoMoneda2.setEditable(false);
 		moneda2.setEntrada(ingresoMoneda2);
 		gMoneda2Data.add(ingresoMoneda2);
 
@@ -248,7 +264,7 @@ public class app {
 				moneda1.setIndex((int) selectMoneda1.getSelectedIndex());
 				TitleMoneda1.setText(moneda1.getNombre());
 				if (ingresoMoneda1.getText() != "") {
-					// convert(TasaMoneda1, ingresoMoneda1, ingresoMoneda2);
+					convert(moneda1, moneda2);
 				}
 
 			}
@@ -256,13 +272,13 @@ public class app {
 		selectMoneda2.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				moneda2.setNombre(monedas[(int) selectMoneda1.getSelectedIndex()].getNombre());
-				moneda2.setCodigo(monedas[(int) selectMoneda1.getSelectedIndex()].getCodigo());
-				moneda2.setTasa(monedas[(int) selectMoneda1.getSelectedIndex()].getTasaCambio());
-				moneda2.setIndex((int) selectMoneda1.getSelectedIndex());
-				TitleMoneda1.setText(moneda2.getNombre());
+				moneda2.setNombre(monedas[(int) selectMoneda2.getSelectedIndex()].getNombre());
+				moneda2.setCodigo(monedas[(int) selectMoneda2.getSelectedIndex()].getCodigo());
+				moneda2.setTasa(monedas[(int) selectMoneda2.getSelectedIndex()].getTasaCambio());
+				moneda2.setIndex((int) selectMoneda2.getSelectedIndex());
+				TitleMoneda2.setText(moneda2.getNombre());
 				if (ingresoMoneda1.getText() != "") {
-					// convert(TasaMoneda1, ingresoMoneda1, ingresoMoneda2);
+					convert(moneda1, moneda2);
 				}
 
 			}
@@ -363,17 +379,39 @@ public class app {
 	}
 
 	private void convert(Moneda origen, Moneda destino) {
-		/*
-		String valor = origen.getText();
-		double total = 0;
-		if (valor.matches("[0-9]*")) {
-			total = Double.parseDouble(valor) * tasa;
-			destino.setText(String.valueOf(total));
+		String valor = origen.getEntrada().getText();
+		double totalUSD = 0;
+		double totalMon;
+		if (validNumber(valor)) {
+			DecimalFormat format = new DecimalFormat("#.####");
+			totalUSD = origen.ConvToUSD();
+			if (origen.getCodigo() == destino.getCodigo()) {
+				destino.getEntrada().setText(origen.getEntrada().getText());
+			} else {
+				if (destino.getCodigo() == "USD") {
+
+					destino.getEntrada().setText(String.valueOf(format.format(totalUSD)));
+				} else {
+					totalMon = destino.getTasa() * totalUSD;
+					destino.getEntrada().setText(String.valueOf(format.format(totalMon)));
+				}
+			}
+
 		} else {
-			origen.setText("");
 			JOptionPane.showMessageDialog(frmOracleNext, "El campo de ingreso debe ser solo número", "ADVERTENCIA.",
 					JOptionPane.WARNING_MESSAGE);
 		}
-		*/
+	}
+
+	private boolean validNumber(String valor) {
+		String regex = "^(\\d+)?(\\.{0,1}\\d{0,1})?$";
+		return valor.matches(regex);
+	}
+
+	public static String removeLastChar(String str) {
+		if (str == null || str.length() == 0) {
+			return str;
+		}
+		return str.substring(0, str.length() - 1);
 	}
 }
