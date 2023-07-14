@@ -2,7 +2,6 @@ package co.com.challenger.main;
 
 import java.awt.*;
 
-import javax.swing.JFrame;
 import javax.swing.JPopupMenu;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -32,11 +31,13 @@ import java.awt.event.KeyAdapter;
 
 public class app {
 
-	private JFrame frmOracleNext;
+	private Frame frmOracleNext;
 	private JMenuBar menuBar;
 	private JTextField ingresoMoneda1;
 	private JTextField ingresoMoneda2;
 	Monedas[] monedas = Monedas.values();
+	Temperaturas[] temp = Temperaturas.values();
+	private JTextField valorTemp;
 
 	/**
 	 * Launch the application.
@@ -65,18 +66,7 @@ public class app {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frmOracleNext = new JFrame();
-		frmOracleNext.setResizable(false);
-		frmOracleNext.setFont(new Font("Raleway Thin", Font.BOLD, 29));
-		frmOracleNext.setIconImage(Toolkit.getDefaultToolkit().getImage("assets\\icono.png"));
-		frmOracleNext.setTitle("Challenge ONE Back End - Java Conversor de Moneda");
-		Toolkit pantalla = Toolkit.getDefaultToolkit();
-		Dimension sizePantalla = pantalla.getScreenSize();
-		int h = sizePantalla.height;
-		int w = sizePantalla.width;
-		frmOracleNext.setBounds(w / 4, h / 4, w / 2, h / 2);
-		frmOracleNext.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmOracleNext.setBackground(SystemColor.window);
+		frmOracleNext = new Frame();
 
 		JPopupMenu popupMenu = new JPopupMenu();
 		popupMenu.setToolTipText("menu tt");
@@ -143,14 +133,13 @@ public class app {
 		verticalBox_2.setBorder(new EmptyBorder(30, 5, 0, 5));
 		verticalBox.add(verticalBox_2);
 
-		JLabel lblNewJgoodiesLabel = DefaultComponentFactory.getInstance().createLabel("Unidades");
-		lblNewJgoodiesLabel.setBounds(new Rectangle(0, 0, 100, 20));
-		lblNewJgoodiesLabel.setMaximumSize(new Dimension(120, 25));
-		verticalBox_2.add(lblNewJgoodiesLabel);
-		lblNewJgoodiesLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		JLabel TitleMenu = DefaultComponentFactory.getInstance().createLabel("Unidades");
+		TitleMenu.setBounds(new Rectangle(0, 0, 100, 20));
+		TitleMenu.setMaximumSize(new Dimension(120, 25));
+		TitleMenu.setHorizontalAlignment(SwingConstants.CENTER);
+		verticalBox_2.add(TitleMenu);
 
 		JButton btnMoneda = new JButton("💵 Moneda");
-
 		btnMoneda.setHorizontalAlignment(SwingConstants.LEFT);
 		btnMoneda.setMaximumSize(new Dimension(130, 25));
 		btnMoneda.setToolTipText("Conversor de Monedas");
@@ -181,12 +170,16 @@ public class app {
 				gl_mainPanel.createParallelGroup(Alignment.LEADING).addGap(0, 500, Short.MAX_VALUE));
 		gl_mainPanel
 				.setVerticalGroup(gl_mainPanel.createParallelGroup(Alignment.LEADING).addGap(0, 230, Short.MAX_VALUE));
+
 		mainPanel.setLayout(gl_mainPanel);
+
 		// ------------ .: Moneda :.------------------
+
 		JPanel monedaPanel = new JPanel();
 
 		monedaPanel.setBounds(new Rectangle(0, 0, 500, 230));
-		mainPanel.add(monedaPanel);
+		// mainPanel.add(monedaPanel);
+
 		Box monedaPanelInterior = Box.createHorizontalBox();
 		monedaPanel.add(monedaPanelInterior);
 
@@ -225,24 +218,21 @@ public class app {
 		gMoneda1Data.add(selectMoneda1);
 
 		ingresoMoneda1 = new JTextField();
+		ingresoMoneda1.setColumns(10);
+		moneda1.setEntrada(ingresoMoneda1);
+		gMoneda1Data.add(ingresoMoneda1);
 		ingresoMoneda1.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				String valor = moneda1.getEntrada().getText();
-				if (validNumber(valor)) {
-					convert(moneda1, moneda2);
+				if (validNumeroPositivo(valor)) {
+					convertMoneda(moneda1, moneda2);
 				} else {
 					valor = removeLastChar(valor);
 					moneda1.getEntrada().setText(valor);
 				}
 			}
 		});
-		ingresoMoneda1.setColumns(10);
-		moneda1.setEntrada(ingresoMoneda1);
-		gMoneda1Data.add(ingresoMoneda1);
-
-		JPanel InteriorPanelMoneda_2 = new JPanel();
-		InteriorPanelMoneda_2.setBorder(new EmptyBorder(50, 0, 0, 0));
 
 		JComboBox selectMoneda2 = new JComboBox();
 		selectMoneda2.setModel(new DefaultComboBoxModel(Monedas.values()));
@@ -263,8 +253,8 @@ public class app {
 				moneda1.setTasa(monedas[(int) selectMoneda1.getSelectedIndex()].getTasaCambio());
 				moneda1.setIndex((int) selectMoneda1.getSelectedIndex());
 				TitleMoneda1.setText(moneda1.getNombre());
-				if (ingresoMoneda1.getText() != "") {
-					convert(moneda1, moneda2);
+				if (!ingresoMoneda1.getText().equals("")) {
+					convertMoneda(moneda1, moneda2);
 				}
 
 			}
@@ -277,8 +267,8 @@ public class app {
 				moneda2.setTasa(monedas[(int) selectMoneda2.getSelectedIndex()].getTasaCambio());
 				moneda2.setIndex((int) selectMoneda2.getSelectedIndex());
 				TitleMoneda2.setText(moneda2.getNombre());
-				if (ingresoMoneda1.getText() != "") {
-					convert(moneda1, moneda2);
+				if (!ingresoMoneda1.getText().equals("")) {
+					convertMoneda(moneda1, moneda2);
 				}
 
 			}
@@ -286,16 +276,111 @@ public class app {
 
 		monedaPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
-		// -------------------------------------------------------
+		// --------------.: Temperatura :.-----------------------------------------
 
 		JPanel temperaturaPanel = new JPanel();
 		temperaturaPanel.setBounds(new Rectangle(0, 0, 500, 230));
-		temperaturaPanel.setBackground(Color.CYAN);
+		mainPanel.add(temperaturaPanel);
 
+		Box gTemp = Box.createVerticalBox();
+		temperaturaPanel.add(gTemp);
+
+		Box gEntradaTemp = Box.createHorizontalBox();
+		gEntradaTemp.setBorder(new EmptyBorder(30, 0, 0, 0));
+		gTemp.add(gEntradaTemp);
+
+		Box gOrigen = Box.createVerticalBox();
+		gEntradaTemp.add(gOrigen);
+
+		JLabel TextOrigenTemp = new JLabel("Unidad Origen");
+		TextOrigenTemp.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		TextOrigenTemp.setHorizontalAlignment(SwingConstants.CENTER);
+		gOrigen.add(TextOrigenTemp);
+
+		Temperatura tempOrigen = new Temperatura(temp[0].getNombre(), temp[0].getCodigo(), 0, temp[0]);
+		Temperatura tempDestino = new Temperatura(temp[0].getNombre(), temp[0].getCodigo(), 0, temp[0]);
+
+		JComboBox unidadOrigen = new JComboBox();
+		unidadOrigen.setModel(new DefaultComboBoxModel(Temperaturas.values()));
+		gOrigen.add(unidadOrigen);
+
+		Box gDestino = Box.createVerticalBox();
+		gEntradaTemp.add(gDestino);
+
+		JLabel TextDestinoTemp = new JLabel("Unidad Destino");
+		TextDestinoTemp.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		TextDestinoTemp.setHorizontalAlignment(SwingConstants.CENTER);
+		gDestino.add(TextDestinoTemp);
+
+		JComboBox unidadDestino = new JComboBox();
+		unidadDestino.setModel(new DefaultComboBoxModel(Temperaturas.values()));
+		gDestino.add(unidadDestino);
+
+		Box gValor = Box.createVerticalBox();
+		gEntradaTemp.add(gValor);
+
+		JLabel TextValorTemp = new JLabel("Valor");
+		TextDestinoTemp.setHorizontalAlignment(SwingConstants.CENTER);
+		gValor.add(TextValorTemp);
+
+		valorTemp = new JTextField();
+		gValor.add(valorTemp);
+		valorTemp.setColumns(15);
+
+		Box ResultTemp = Box.createHorizontalBox();
+		ResultTemp.setBorder(new EmptyBorder(30, 0, 0, 0));
+		gTemp.add(ResultTemp);
+
+		JLabel ResutadoTemperatura = new JLabel();
+		ResutadoTemperatura.setForeground(Color.GREEN);
+		ResutadoTemperatura.setText("0 °C");
+		ResutadoTemperatura.setFont(new Font("Tahoma", Font.BOLD, 50));
+		ResutadoTemperatura.setHorizontalAlignment(SwingConstants.CENTER);
+		ResultTemp.add(ResutadoTemperatura);
+
+		unidadOrigen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tempOrigen.setNombre(temp[(int) unidadOrigen.getSelectedIndex()].getNombre());
+				tempOrigen.setCodigo(temp[(int) unidadOrigen.getSelectedIndex()].getCodigo());
+				tempOrigen.setIndex(unidadOrigen.getSelectedIndex());
+				tempOrigen.setTemperatura(temp[(int) unidadOrigen.getSelectedIndex()]);
+				String valor = valorTemp.getText();
+				if (!valor.equals("")) {
+					convertTemp(valor, tempOrigen, tempDestino, ResutadoTemperatura);
+				}
+			}
+		});
+
+		unidadDestino.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tempDestino.setNombre(temp[(int) unidadDestino.getSelectedIndex()].getNombre());
+				tempDestino.setCodigo(temp[(int) unidadDestino.getSelectedIndex()].getCodigo());
+				tempDestino.setIndex(unidadDestino.getSelectedIndex());
+				tempDestino.setTemperatura(temp[(int) unidadDestino.getSelectedIndex()]);
+				String valor = valorTemp.getText();
+				if (!valor.equals("")) {
+					convertTemp(valor, tempOrigen, tempDestino, ResutadoTemperatura);
+				}
+			}
+		});
+		valorTemp.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				String valor = valorTemp.getText();
+				if (validNumero(valor)) {
+					convertTemp(valor, tempOrigen, tempDestino, ResutadoTemperatura);
+				} else {
+					valor = removeLastChar(valor);
+					valorTemp.setText(valor);
+				}
+			}
+		});
+		// ------------.: Volumen :. ---------------------------------------------
 		JPanel volumenPanel = new JPanel();
 		volumenPanel.setBounds(new Rectangle(0, 0, 500, 230));
 		volumenPanel.setBackground(Color.MAGENTA);
 
+		// ------------.: Otro :.----------------------------------------------
 		JPanel otroPanel = new JPanel();
 		otroPanel.setBounds(new Rectangle(0, 0, 500, 230));
 		otroPanel.setBackground(Color.GREEN);
@@ -334,6 +419,7 @@ public class app {
 
 			}
 		});
+
 		btnVol.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				mainPanel.removeAll();
@@ -343,6 +429,7 @@ public class app {
 
 			}
 		});
+
 		btnOtro.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				mainPanel.removeAll();
@@ -352,6 +439,7 @@ public class app {
 
 			}
 		});
+
 	}
 
 	private static void addPopup(Component component, final JPopupMenu popup) {
@@ -378,18 +466,17 @@ public class app {
 		return menuBar;
 	}
 
-	private void convert(Moneda origen, Moneda destino) {
+	private void convertMoneda(Moneda origen, Moneda destino) {
 		String valor = origen.getEntrada().getText();
 		double totalUSD = 0;
 		double totalMon;
-		if (validNumber(valor)) {
+		if (validNumeroPositivo(valor)) {
 			DecimalFormat format = new DecimalFormat("#.####");
 			totalUSD = origen.ConvToUSD();
 			if (origen.getCodigo() == destino.getCodigo()) {
 				destino.getEntrada().setText(origen.getEntrada().getText());
 			} else {
 				if (destino.getCodigo() == "USD") {
-
 					destino.getEntrada().setText(String.valueOf(format.format(totalUSD)));
 				} else {
 					totalMon = destino.getTasa() * totalUSD;
@@ -403,8 +490,31 @@ public class app {
 		}
 	}
 
-	private boolean validNumber(String valor) {
-		String regex = "^(\\d+)?(\\.{0,1}\\d{0,1})?$";
+	private void convertTemp(String valor, Temperatura origen, Temperatura destino, JLabel resultado) {
+		Color ct = Color.GREEN;
+		DecimalFormat format = new DecimalFormat("#.####");
+		if (validNumero(valor)) {
+			if (!valor.equals("-")) {
+				double total = origen.getTemperatura().convertir(Double.parseDouble(valor), destino.getTemperatura());
+				if (total < 0) {
+					ct = Color.RED;
+				}
+				resultado.setForeground(ct);
+				resultado.setText(String.valueOf(format.format(total)) + " " + destino.getCodigo());
+			}
+		} else {
+			JOptionPane.showMessageDialog(frmOracleNext, "El campo de ingreso debe ser solo número", "ADVERTENCIA.",
+					JOptionPane.WARNING_MESSAGE);
+		}
+	}
+
+	private boolean validNumeroPositivo(String valor) {
+		String regex = "^(\\d+)?(\\.{0,1}\\d+)?$";
+		return valor.matches(regex);
+	}
+
+	private boolean validNumero(String valor) {
+		String regex = "^-?(\\d+)?(\\.{0,1}\\d+)?$";
 		return valor.matches(regex);
 	}
 
