@@ -1,38 +1,46 @@
-# Challenge-Oracle-ONE-java-convert
-Challenge ONE Back End - Java Conversor de Moneda
+# Challenge ONE Back End - Java Conversor de Moneda
 
-## Aplicación de Conversión de Unidades
+Este es un proyecto de conversión de moneda desarrollado en Java como parte del Challenges Back End ONE - G5. Permite convertir entre diferentes monedas utilizando tasas de cambio actualizadas via API publica https://api.exchangerate.host/latest.
 
-Esta es una aplicación de conversión de unidades que permite convertir entre diferentes tipos de unidades, como moneda, temperatura y volumen. La aplicación está desarrollada en Java y utiliza una interfaz gráfica de usuario (GUI) basada en la biblioteca Swing.
+## Capturas de Pantalla
 
-## Características
+| Conversion de Moneda | Conversion de Temperatura |
+| --- | --- |
+| ![Conversion de Moneda](https://raw.githubusercontent.com/zero-53/Challenge-Oracle-ONE-java-convert/master/docs/img/Principal%20conversor.png) | ![Conversion de Temperatura](https://raw.githubusercontent.com/zero-53/Challenge-Oracle-ONE-java-convert/master/docs/img/Tempreratura%20Conversor.png) |
 
-- Conversión de moneda: Permite convertir entre diferentes monedas utilizando las tasas de cambio actualizadas.
-- Conversión de temperatura: Permite convertir entre diferentes escalas de temperatura, como Celsius, Fahrenheit y Kelvin.
-- Conversión de volumen: Permite convertir entre diferentes unidades de volumen, como litros, galones y metros cúbicos.
+## Funcionalidades
 
-## Requisitos del sistema
+
+
+- Conversión de moneda entre diferentes tasas de cambio.
+- Soporte para múltiples monedas.
+- Interfaz gráfica de usuario (GUI) para una fácil interacción.
+- Conversion de Unidades de Temperatura
+
+## Requisitos del Sistema
 
 - Java Development Kit (JDK) 8 o superior.
-- Máquina Virtual de Java (JVM) para ejecutar la aplicación.
+- Biblioteca externa: `json-20210307.jar` (se proporciona en el repositorio).
 
-## Instrucciones de uso
+## Cómo utilizar
 
-1. Clona el repositorio o descarga los archivos de la aplicación.
-2. Abre el proyecto en tu entorno de desarrollo Java preferido.
-3. Compila y ejecuta la clase principal `app.java`.
-4. Se abrirá la interfaz de usuario de la aplicación.
-5. Selecciona el tipo de conversión que deseas realizar (moneda, temperatura o volumen).
-6. Ingresa los valores requeridos en los campos correspondientes.
-7. Observa el resultado de la conversión en el área designada.
+1. Clona o descarga el repositorio del proyecto.
+2. Importa el proyecto en tu entorno de desarrollo Java.
+3. Configura las dependencias y el build path para incluir el archivo JAR `json-20210307.jar`.
+4. Compila y ejecuta el archivo `app.java` para iniciar la aplicación.
+5. Por defecto la seccion inicial es el convertidor de moneda
+6. Utiliza la interfaz gráfica para ingresar el valor a convertir y seleccionar las monedas de origen y destino y se optiene la conversion en el campo destino
+7. Para convertir Temperatura de debe seleccionar en el botón lateral temperatura, indicar la unidad de origen, la unidad de destino e ingresar el valor a convertir
 
 ## Contribuciones
 
-Las contribuciones son bienvenidas. Si encuentras algún problema o tienes alguna mejora para la aplicación, siéntete libre de abrir un *issue* o enviar una solicitud de *pull request*.
+Las contribuciones son bienvenidas. Si deseas mejorar este proyecto, puedes enviar tus pull requests o abrir issues en este repositorio.
 
 ## Licencia
 
-Este proyecto está bajo la Licencia MIT. Puedes consultar el archivo [LICENSE](LICENSE) para obtener más información.
+Este proyecto está bajo la licencia [MIT](LICENSE). Puedes utilizar, leer y modificar el código, siempre y cuando se te den los créditos correspondientes.
+
+
 
 ---
 Desarrollado por [Amado León](https://github.com/zero-53)
