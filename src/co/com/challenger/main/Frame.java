@@ -7,21 +7,24 @@ import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 
+/**
+ * La clase Frame representa el marco principal de la aplicación. Extiende la
+ * clase JFrame para crear una ventana con características específicas.
+ * 
+ * @author Amado León
+ * @version 1.0.0
+ */
 public class Frame extends JFrame {
-	/**
-	 * @author Amado León
-	 * @version 1.0.0
-	 * 
-	 */
 	private static final long serialVersionUID = 8845655613306682261L;
-	Toolkit pantalla = Toolkit.getDefaultToolkit();
-	Dimension sizePantalla = pantalla.getScreenSize();
-	int h = sizePantalla.height;
-	int w = sizePantalla.width;
+	private Toolkit pantalla = Toolkit.getDefaultToolkit();
+	private Dimension sizePantalla = pantalla.getScreenSize();
+	private int h = sizePantalla.height;
+	private int w = sizePantalla.width;
+
 	/**
-	 * Clase que permite la creación del Frame principal
+	 * Crea una instancia de Frame con la configuración predeterminada.
 	 */
-	Frame() {
+	public Frame() {
 		setResizable(false);
 		setFont(new Font("Raleway Thin", Font.BOLD, 29));
 		setIconImage(Toolkit.getDefaultToolkit().getImage("assets\\icono.png"));

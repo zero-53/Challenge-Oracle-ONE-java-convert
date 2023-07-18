@@ -1,16 +1,14 @@
 package co.com.challenger.main;
 
 import java.awt.*;
+import javax.swing.*;
 
-import javax.swing.JPopupMenu;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
-import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JLabel;
 import com.jgoodies.forms.factories.DefaultComponentFactory;
@@ -29,6 +27,11 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.KeyAdapter;
 
+/**
+ * La clase `app` representa la aplicación principal del conversor de unidades.
+ * Proporciona una interfaz gráfica de usuario con opciones para convertir entre
+ * diferentes unidades de medida, como moneda, temperatura, volumen, etc.
+ */
 public class app {
 
 	private Frame frmOracleNext;
@@ -40,7 +43,10 @@ public class app {
 	private JTextField valorTemp;
 
 	/**
-	 * Launch the application.
+	 * Método principal que inicia la aplicación.
+	 * 
+	 * @param args los argumentos de la línea de comandos (no se utilizan en esta
+	 *             aplicación)
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -56,45 +62,59 @@ public class app {
 	}
 
 	/**
-	 * Create the application.
+	 * Crea la aplicación.
 	 */
 	public app() {
 		initialize();
 	}
 
 	/**
-	 * Initialize the contents of the frame.
+	 * Inicializa el contenido del marco de la aplicación.
 	 */
 	private void initialize() {
 		frmOracleNext = new Frame();
-
-		JPopupMenu popupMenu = new JPopupMenu();
-		popupMenu.setToolTipText("menu tt");
-		popupMenu.setLabel("menu");
-		popupMenu.setBackground(SystemColor.desktop);
-		addPopup(frmOracleNext.getContentPane(), popupMenu);
-
-		JMenuItem mntmNewMenuItem = new JMenuItem("Menú 1");
-		mntmNewMenuItem.setBackground(SystemColor.menu);
-		mntmNewMenuItem.setSelectedIcon(null);
-		mntmNewMenuItem.setHorizontalAlignment(SwingConstants.CENTER);
-		popupMenu.add(mntmNewMenuItem);
-
-		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Menú 2");
-		mntmNewMenuItem_1.setHorizontalAlignment(SwingConstants.CENTER);
-		mntmNewMenuItem_1.setSelectedIcon(null);
-		mntmNewMenuItem_1.setBackground(SystemColor.menu);
-		popupMenu.add(mntmNewMenuItem_1);
-
-		JMenu mnNewMenu = new JMenu("Menu Grupo");
-		mnNewMenu.setHorizontalAlignment(SwingConstants.CENTER);
-		mnNewMenu.setForeground(SystemColor.inactiveCaption);
-		popupMenu.add(mnNewMenu);
-
-		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Menu Grupo 1");
-		mntmNewMenuItem_2.setHorizontalAlignment(SwingConstants.CENTER);
-		mnNewMenu.add(mntmNewMenuItem_2);
-
+		/*
+		 * //------ Menú ------------ // TODO: Futura implementación para nuevas
+		 * caracteristicas del menu principal y contextual
+		 * 
+		 * JPopupMenu popupMenu = new JPopupMenu(); popupMenu.setToolTipText("menu tt");
+		 * popupMenu.setLabel("menu"); popupMenu.setBackground(SystemColor.desktop);
+		 * addPopup(frmOracleNext.getContentPane(), popupMenu);
+		 * 
+		 * JMenuItem mntmNewMenuItem = new JMenuItem("Menú 1");
+		 * mntmNewMenuItem.setBackground(SystemColor.menu);
+		 * mntmNewMenuItem.setSelectedIcon(null);
+		 * mntmNewMenuItem.setHorizontalAlignment(SwingConstants.CENTER);
+		 * popupMenu.add(mntmNewMenuItem);
+		 * 
+		 * JMenuItem mntmNewMenuItem_1 = new JMenuItem("Menú 2");
+		 * mntmNewMenuItem_1.setHorizontalAlignment(SwingConstants.CENTER);
+		 * mntmNewMenuItem_1.setSelectedIcon(null);
+		 * mntmNewMenuItem_1.setBackground(SystemColor.menu);
+		 * popupMenu.add(mntmNewMenuItem_1);
+		 * 
+		 * JMenu mnNewMenu = new JMenu("Menu Grupo");
+		 * mnNewMenu.setHorizontalAlignment(SwingConstants.CENTER);
+		 * mnNewMenu.setForeground(SystemColor.inactiveCaption);
+		 * popupMenu.add(mnNewMenu);
+		 * 
+		 * JMenuItem mntmNewMenuItem_2 = new JMenuItem("Menu Grupo 1");
+		 * mntmNewMenuItem_2.setHorizontalAlignment(SwingConstants.CENTER);
+		 * mnNewMenu.add(mntmNewMenuItem_2); menuBar = new JMenuBar();
+		 * frmOracleNext.setJMenuBar(menuBar);
+		 * 
+		 * JMenu mnNewMenu_1 = new JMenu("Archivo");
+		 * mnNewMenu_1.setHorizontalAlignment(SwingConstants.CENTER);
+		 * menuBar.add(mnNewMenu_1);
+		 * 
+		 * JMenuItem mntmNewMenuItem_3 = new JMenuItem("Abrir");
+		 * mnNewMenu_1.add(mntmNewMenuItem_3);
+		 * 
+		 * JMenu mnNewMenu_2 = new JMenu("Edición"); menuBar.add(mnNewMenu_2);
+		 * 
+		 * JMenuItem mntmNewMenuItem_4 = new JMenuItem("Copiar");
+		 * mnNewMenu_2.add(mntmNewMenuItem_4); // --------------------------
+		 */
 		JPanel headerPanel = new JPanel();
 		frmOracleNext.getContentPane().add(headerPanel, BorderLayout.NORTH);
 		headerPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
@@ -132,7 +152,6 @@ public class app {
 		verticalBox_2.setPreferredSize(new Dimension(150, 300));
 		verticalBox_2.setBorder(new EmptyBorder(30, 5, 0, 5));
 		verticalBox.add(verticalBox_2);
-
 		JLabel TitleMenu = DefaultComponentFactory.getInstance().createLabel("Unidades");
 		TitleMenu.setBounds(new Rectangle(0, 0, 100, 20));
 		TitleMenu.setMaximumSize(new Dimension(120, 25));
@@ -151,19 +170,19 @@ public class app {
 		btnTemp.setHorizontalAlignment(SwingConstants.LEFT);
 		btnTemp.setMaximumSize(new Dimension(130, 25));
 		verticalBox_2.add(btnTemp);
-
-		JButton btnVol = new JButton("📦 Volumen");
-		btnVol.setHorizontalAlignment(SwingConstants.LEFT);
-		btnVol.setMaximumSize(new Dimension(130, 25));
-		verticalBox_2.add(btnVol);
-
-		JButton btnOtro = new JButton("🚗 New button");
-		btnOtro.setHorizontalAlignment(SwingConstants.LEFT);
-		btnOtro.setMaximumSize(new Dimension(130, 25));
-		verticalBox_2.add(btnOtro);
-
+		/**
+		 * TODO: Se agregan mas botones en el menu lateral para tener otras funciones
+		 * 
+		 * 
+		 * JButton btnVol = new JButton("📦 Volumen");
+		 * btnVol.setHorizontalAlignment(SwingConstants.LEFT); btnVol.setMaximumSize(new
+		 * Dimension(130, 25)); verticalBox_2.add(btnVol);
+		 * 
+		 * JButton btnOtro = new JButton("🚗 New button");
+		 * btnOtro.setHorizontalAlignment(SwingConstants.LEFT);
+		 * btnOtro.setMaximumSize(new Dimension(130, 25)); verticalBox_2.add(btnOtro);
+		 */
 		JPanel mainPanel = new JPanel();
-		mainPanel.setBackground(Color.blue);
 		frmOracleNext.getContentPane().add(mainPanel, BorderLayout.CENTER);
 		GroupLayout gl_mainPanel = new GroupLayout(mainPanel);
 		gl_mainPanel.setHorizontalGroup(
@@ -374,32 +393,20 @@ public class app {
 				}
 			}
 		});
-		// ------------.: Volumen :. ---------------------------------------------
-		JPanel volumenPanel = new JPanel();
-		volumenPanel.setBounds(new Rectangle(0, 0, 500, 230));
-		volumenPanel.setBackground(Color.MAGENTA);
+		/*
+		 * TODO: Paneles para mostrar las nuevas funciones
+		 * 
+		 * 
+		 * // ------------.: Volumen :. ---------------------------------------------
+		 * JPanel volumenPanel = new JPanel(); volumenPanel.setBounds(new Rectangle(0,
+		 * 0, 500, 230)); volumenPanel.setBackground(Color.MAGENTA);
+		 * 
+		 * // ------------.: Otro :.----------------------------------------------
+		 * JPanel otroPanel = new JPanel(); otroPanel.setBounds(new Rectangle(0, 0, 500,
+		 * 230)); otroPanel.setBackground(Color.GREEN); //
+		 * ---------------------------------------------------------------------------
+		 */
 
-		// ------------.: Otro :.----------------------------------------------
-		JPanel otroPanel = new JPanel();
-		otroPanel.setBounds(new Rectangle(0, 0, 500, 230));
-		otroPanel.setBackground(Color.GREEN);
-
-		menuBar = new JMenuBar();
-		frmOracleNext.setJMenuBar(menuBar);
-
-		JMenu mnNewMenu_1 = new JMenu("Archivo");
-		mnNewMenu_1.setHorizontalAlignment(SwingConstants.CENTER);
-		menuBar.add(mnNewMenu_1);
-
-		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Abrir");
-		mnNewMenu_1.add(mntmNewMenuItem_3);
-
-		JMenu mnNewMenu_2 = new JMenu("Edición");
-		menuBar.add(mnNewMenu_2);
-
-		JMenuItem mntmNewMenuItem_4 = new JMenuItem("Copiar");
-		mnNewMenu_2.add(mntmNewMenuItem_4);
-		// --------------------------
 		btnMoneda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				mainPanel.removeAll();
@@ -418,53 +425,40 @@ public class app {
 
 			}
 		});
-
-		btnVol.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				mainPanel.removeAll();
-				mainPanel.add(volumenPanel);
-				mainPanel.revalidate();
-				mainPanel.repaint();
-
-			}
-		});
-
-		btnOtro.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				mainPanel.removeAll();
-				mainPanel.add(otroPanel);
-				mainPanel.revalidate();
-				mainPanel.repaint();
-
-			}
-		});
-
+		/*
+		 * TODO: Funciones que activan los paneles para que se muestren las nuevas
+		 * funciones
+		 * 
+		 * 
+		 * btnVol.addActionListener(new ActionListener() { public void
+		 * actionPerformed(ActionEvent e) { mainPanel.removeAll();
+		 * mainPanel.add(volumenPanel); mainPanel.revalidate(); mainPanel.repaint();
+		 * 
+		 * } });
+		 * 
+		 * btnOtro.addActionListener(new ActionListener() { public void
+		 * actionPerformed(ActionEvent e) { mainPanel.removeAll();
+		 * mainPanel.add(otroPanel); mainPanel.revalidate(); mainPanel.repaint();
+		 * 
+		 * } });
+		 */
 	}
 
-	private static void addPopup(Component component, final JPopupMenu popup) {
-		component.addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent e) {
-				if (e.isPopupTrigger()) {
-					showMenu(e);
-				}
-			}
-
-			public void mouseReleased(MouseEvent e) {
-				if (e.isPopupTrigger()) {
-					showMenu(e);
-				}
-			}
-
-			private void showMenu(MouseEvent e) {
-				popup.show(e.getComponent(), e.getX(), e.getY());
-			}
-		});
-	}
-
-	public JMenuBar getMenuBar() {
-		return menuBar;
-	}
-
+	/*
+	 * TODO: Funciones que controlan los menú
+	 * 
+	 * private static void addPopup(Component component, final JPopupMenu popup) {
+	 * component.addMouseListener(new MouseAdapter() { public void
+	 * mousePressed(MouseEvent e) { if (e.isPopupTrigger()) { showMenu(e); } }
+	 * 
+	 * public void mouseReleased(MouseEvent e) { if (e.isPopupTrigger()) {
+	 * showMenu(e); } }
+	 * 
+	 * private void showMenu(MouseEvent e) { popup.show(e.getComponent(), e.getX(),
+	 * e.getY()); } }); }
+	 * 
+	 * public JMenuBar getMenuBar() { return menuBar; }
+	 */
 	private void convertMoneda(Moneda origen, Moneda destino) {
 		String valor = origen.getEntrada().getText();
 		double totalUSD = 0;
@@ -489,38 +483,68 @@ public class app {
 		}
 	}
 
-	private void convertTemp(String valor, Temperatura origen, Temperatura destino, JLabel resultado) {
-		Color ct = Color.GREEN;
-		DecimalFormat format = new DecimalFormat("#.####");
-		if (validNumero(valor)) {
-			if (!valor.equals("-")) {
-				double total = origen.getTemperatura().convertir(Double.parseDouble(valor), destino.getTemperatura());
-				if (total < 0) {
-					ct = Color.RED;
+	private void convertTemp(String valor, Temperatura origen, Temperatura destino, JLabel ResultadoTemp) {
+		double tempVal = Double.valueOf(valor);
+		double resultTemp = tempVal;
+		DecimalFormat format = new DecimalFormat("#.##");
+		if (origen.getNombre() != destino.getNombre()) {
+			if (origen.getCodigo().equals("C")) {
+				switch (destino.getCodigo()) {
+				case "F":
+					resultTemp = (tempVal * 9 / 5) + 32;
+					break;
+				case "K":
+					resultTemp = tempVal + 273.15;
+					break;
 				}
-				resultado.setForeground(ct);
-				resultado.setText(String.valueOf(format.format(total)) + " " + destino.getCodigo());
+			} else if (origen.getCodigo().equals("F")) {
+				switch (destino.getCodigo()) {
+				case "C":
+					resultTemp = (tempVal - 32) * 5 / 9;
+					break;
+				case "K":
+					resultTemp = (tempVal + 459.67) * 5 / 9;
+					break;
+				}
+			} else if (origen.getCodigo().equals("K")) {
+				switch (destino.getCodigo()) {
+				case "C":
+					resultTemp = tempVal - 273.15;
+					break;
+				case "F":
+					resultTemp = (tempVal * 9 / 5) - 459.67;
+					break;
+				}
 			}
+
+		}
+		ResultadoTemp.setText(format.format(resultTemp) + " " + destino.getCodigo());
+	}
+
+	private static String removeLastChar(String str) {
+		if (str.length() > 0 && str != null) {
+			str = str.substring(0, str.length() - 1);
+		}
+		return str;
+	}
+
+	private boolean validNumero(String num) {
+		try {
+			Double.parseDouble(num);
+			return true;
+		} catch (NumberFormatException nfe) {
+			if (num.length() == 1 && num.charAt(0) == '.') {
+				return true;
+			}
+			return false;
+		}
+	}
+
+	private boolean validNumeroPositivo(String num) {
+		if (validNumero(num)) {
+			return Double.parseDouble(num) >= 0;
 		} else {
-			JOptionPane.showMessageDialog(frmOracleNext, "El campo de ingreso debe ser solo número", "ADVERTENCIA.",
-					JOptionPane.WARNING_MESSAGE);
+			return false;
 		}
-	}
-
-	private boolean validNumeroPositivo(String valor) {
-		String regex = "^(\\d+)?(\\.{0,1}\\d+)?$";
-		return valor.matches(regex);
-	}
-
-	private boolean validNumero(String valor) {
-		String regex = "^-?(\\d+)?(\\.{0,1}\\d+)?$";
-		return valor.matches(regex);
-	}
-
-	public static String removeLastChar(String str) {
-		if (str == null || str.length() == 0) {
-			return str;
-		}
-		return str.substring(0, str.length() - 1);
 	}
 }

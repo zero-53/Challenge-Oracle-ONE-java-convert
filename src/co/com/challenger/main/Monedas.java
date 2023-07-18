@@ -11,6 +11,11 @@ import java.util.Scanner;
 
 import org.json.*;
 
+/**
+ * El enum Monedas representa las diferentes monedas disponibles para el
+ * conversor de moneda. Cada moneda tiene un código, un nombre y una tasa de
+ * cambio asociada.
+ */
 public enum Monedas {
 	USD("USD", "Dólar estadounidense"), EUR("EUR", "Euro"), COP("COP", "Pesos Colombianos"),
 	ARS("ARS", "Peso argentino"), BOB("BOB", "Boliviano boliviano"), BRL("BRL", "Real brasileño"),
@@ -36,35 +41,62 @@ public enum Monedas {
 	private String url_str = "https://api.exchangerate.host/latest?base=USD";
 	private JSONObject dataRate;
 
+	/**
+	 * Crea una instancia de Monedas con el código y nombre de la moneda. La tasa de
+	 * cambio se obtiene del archivo "rate.json" o de una API en línea si el archivo
+	 * no existe o es antiguo.
+	 *
+	 * @param codigo el código de la moneda
+	 * @param nombre el nombre de la moneda
+	 */
 	private Monedas(String codigo, String nombre) {
 		this.codigo = codigo;
 		this.nombre = nombre;
 		try {
 			this.tasaCambio = fileRate(codigo);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
+	/**
+	 * Obtiene el código de la moneda.
+	 *
+	 * @return el código de la moneda
+	 */
 	public String getCodigo() {
 		return codigo;
 	}
 
+	/**
+	 * Obtiene el nombre de la moneda.
+	 *
+	 * @return el nombre de la moneda
+	 */
 	public String getNombre() {
 		return nombre;
 	}
 
+	/**
+	 * Obtiene la tasa de cambio de la moneda.
+	 *
+	 * @return la tasa de cambio de la moneda
+	 */
 	public double getTasaCambio() {
 		return tasaCambio;
 	}
 
+	/**
+	 * Devuelve una representación en forma de cadena del código de la moneda.
+	 *
+	 * @return una cadena que representa el código de la moneda
+	 */
 	@Override
 	public String toString() {
 		return codigo;
 	}
 
-	private double fileRate(String Code) throws IOException {
+	private double fileRate(String Code) throws IOException, JSONException {
 		String fileName = "rate.json";
 		String encoding = "UTF-8";
 		File rate = new File("rate.json");
@@ -78,8 +110,9 @@ public enum Monedas {
 			LocalDateTime now = LocalDateTime.now();
 			LocalDateTime convertedFileTime = LocalDateTime.ofInstant(fileTime.toInstant(), ZoneId.systemDefault());
 			if (convertedFileTime.toLocalDate().equals(now.toLocalDate())) {
-				Scanner scanner = new Scanner(rate);
-				this.dataRate = new JSONObject(scanner.next());
+				try (Scanner scanner = new Scanner(rate)) {
+					this.dataRate = new JSONObject(scanner.next());
+				}
 			} else {
 				PrintWriter writer = new PrintWriter(fileName, encoding);
 				this.dataRate = allRate();
@@ -93,7 +126,6 @@ public enum Monedas {
 		} else {
 			return (double) ((BigDecimal) this.dataRate.get(Code)).doubleValue();
 		}
-
 	}
 
 	private JSONObject allRate() throws IOException {
