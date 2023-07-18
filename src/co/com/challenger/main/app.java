@@ -11,9 +11,6 @@ import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.Box;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
-
 import net.miginfocom.swing.MigLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -25,14 +22,12 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
-import javax.swing.JEditorPane;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.KeyAdapter;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import javax.swing.UIManager;
 
 /**
  * La clase `app` representa la aplicación principal del conversor de unidades.
