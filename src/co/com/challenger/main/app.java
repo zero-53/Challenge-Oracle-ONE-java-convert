@@ -1,31 +1,38 @@
 package co.com.challenger.main;
 
 import java.awt.*;
-import javax.swing.*;
-
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
-import javax.swing.JMenuBar;
 import javax.swing.JLabel;
 import com.jgoodies.forms.factories.DefaultComponentFactory;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.Box;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
+
 import net.miginfocom.swing.MigLayout;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
+import javax.swing.JEditorPane;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.KeyAdapter;
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import javax.swing.UIManager;
 
 /**
  * La clase `app` representa la aplicación principal del conversor de unidades.
@@ -35,7 +42,7 @@ import java.awt.event.KeyAdapter;
 public class app {
 
 	private Frame frmOracleNext;
-	private JMenuBar menuBar;
+	// private JMenuBar menuBar;
 	private JTextField ingresoMoneda1;
 	private JTextField ingresoMoneda2;
 	Monedas[] monedas = Monedas.values();
@@ -131,15 +138,54 @@ public class app {
 		verticalBox_1.add(lblNewLabel_1);
 
 		JPanel footer = new JPanel();
-		footer.setForeground(SystemColor.inactiveCaptionBorder);
+		footer.setForeground(Color.LIGHT_GRAY);
 		footer.setBackground(new Color(60, 78, 78));
 		frmOracleNext.getContentPane().add(footer, BorderLayout.SOUTH);
 
-		JLabel lblNewLabel = new JLabel("Copy 2023");
-		lblNewLabel.setFont(new Font("Raleway Thin", Font.PLAIN, 9));
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setForeground(new Color(168, 140, 90));
+		JLabel lblNewLabel = new JLabel("©️ 2023 | Amado León");
+		lblNewLabel.setFont(new Font("Raleway Thin", Font.BOLD, 11));
+		lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		lblNewLabel.setForeground(Color.WHITE);
 		footer.add(lblNewLabel);
+
+		ImageIcon imgLinkedin = new ImageIcon("assets/linkedin.png");
+		Image imageln = imgLinkedin.getImage().getScaledInstance(-1, 15, Image.SCALE_SMOOTH);
+		ImageIcon resizedIconLinkedin = new ImageIcon(imageln);
+		JLabel linkedin = new JLabel(resizedIconLinkedin);
+		linkedin.setToolTipText("Linkedin");
+		linkedin.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+		linkedin.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					URI uri = new URI("https://www.linkedin.com/in/amadoleon/");
+					Desktop.getDesktop().browse(uri);
+				} catch (URISyntaxException | IOException ex) {
+					ex.printStackTrace();
+				}
+			}
+		});
+		footer.add(linkedin);
+		ImageIcon imgGithub = new ImageIcon("assets/github.png");
+		Image imageGH = imgGithub.getImage().getScaledInstance(-1, 15, Image.SCALE_SMOOTH);
+		ImageIcon resizedIconGh = new ImageIcon(imageGH);
+		JLabel github = new JLabel(resizedIconGh);
+		github.setToolTipText("GitHub");
+		github.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+		github.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					URI uri = new URI("https://github.com/zero-53");
+					Desktop.getDesktop().browse(uri);
+				} catch (URISyntaxException | IOException ex) {
+					ex.printStackTrace();
+				}
+			}
+		});
+		footer.add(github);
 
 		JPanel menuPanel = new JPanel();
 		frmOracleNext.getContentPane().add(menuPanel, BorderLayout.WEST);
@@ -484,40 +530,50 @@ public class app {
 	}
 
 	private void convertTemp(String valor, Temperatura origen, Temperatura destino, JLabel ResultadoTemp) {
-		double tempVal = Double.valueOf(valor);
-		double resultTemp = tempVal;
+		Color ct = Color.GREEN;
 		DecimalFormat format = new DecimalFormat("#.##");
-		if (origen.getNombre() != destino.getNombre()) {
-			if (origen.getCodigo().equals("C")) {
-				switch (destino.getCodigo()) {
-				case "F":
-					resultTemp = (tempVal * 9 / 5) + 32;
-					break;
-				case "K":
-					resultTemp = tempVal + 273.15;
-					break;
+		double resultTemp;
+		if (!valor.equals("-") && !valor.equals("")) {
+			double tempVal = Double.parseDouble(valor);
+			resultTemp = tempVal;
+			if (origen.getNombre() != destino.getNombre()) {
+				if (origen.getNombre().equals("Celsius")) {
+					switch (destino.getNombre()) {
+					case "Fahrenheit":
+						resultTemp = (tempVal * 9 / 5) + 32;
+						break;
+					case "Kelvin":
+						resultTemp = tempVal + 273.15;
+						break;
+					}
+				} else if (origen.getNombre().equals("Fahrenheit")) {
+					switch (destino.getNombre()) {
+					case "Celsius":
+						resultTemp = (tempVal - 32) * 5 / 9;
+						break;
+					case "Kelvin":
+						resultTemp = (tempVal + 459.67) * 5 / 9;
+						break;
+					}
+				} else if (origen.getNombre().equals("Kelvin")) {
+					switch (destino.getNombre()) {
+					case "Celsius":
+						resultTemp = tempVal - 273.15;
+						break;
+					case "Fahrenheit":
+						resultTemp = (tempVal * 9 / 5) - 459.67;
+						break;
+					}
 				}
-			} else if (origen.getCodigo().equals("F")) {
-				switch (destino.getCodigo()) {
-				case "C":
-					resultTemp = (tempVal - 32) * 5 / 9;
-					break;
-				case "K":
-					resultTemp = (tempVal + 459.67) * 5 / 9;
-					break;
-				}
-			} else if (origen.getCodigo().equals("K")) {
-				switch (destino.getCodigo()) {
-				case "C":
-					resultTemp = tempVal - 273.15;
-					break;
-				case "F":
-					resultTemp = (tempVal * 9 / 5) - 459.67;
-					break;
-				}
-			}
 
+			}
+		} else {
+			resultTemp = 0;
 		}
+		if (resultTemp < 0) {
+			ct = Color.RED;
+		}
+		ResultadoTemp.setForeground(ct);
 		ResultadoTemp.setText(format.format(resultTemp) + " " + destino.getCodigo());
 	}
 
@@ -528,16 +584,9 @@ public class app {
 		return str;
 	}
 
-	private boolean validNumero(String num) {
-		try {
-			Double.parseDouble(num);
-			return true;
-		} catch (NumberFormatException nfe) {
-			if (num.length() == 1 && num.charAt(0) == '.') {
-				return true;
-			}
-			return false;
-		}
+	private boolean validNumero(String valor) {
+		String regex = "^-?(\\d+)?(\\.{0,1}\\d+)?$";
+		return valor.matches(regex);
 	}
 
 	private boolean validNumeroPositivo(String num) {

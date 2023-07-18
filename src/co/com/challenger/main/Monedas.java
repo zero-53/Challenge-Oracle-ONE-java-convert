@@ -121,7 +121,6 @@ public enum Monedas {
 			}
 		}
 		if (this.dataRate.get(Code).getClass().getSimpleName().equals("Integer")) {
-			System.out.println(this.dataRate.get(Code));
 			return (1.0 * (Integer) this.dataRate.get(Code));
 		} else {
 			return (double) ((BigDecimal) this.dataRate.get(Code)).doubleValue();
