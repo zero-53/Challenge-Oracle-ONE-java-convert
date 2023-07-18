@@ -1,67 +1,50 @@
 package co.com.challenger.main;
 
+import java.io.*;
+import java.math.BigDecimal;
+import java.net.*;
+import java.nio.file.Files;
+import java.nio.file.attribute.FileTime;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Scanner;
+
+import org.json.*;
+
 public enum Monedas {
-	USD("USD", "Dólar estadounidense", 1.000), 
-	EUR("EUR", "Euro", 0.8809),
-	COP("COP", "Pesos Colombianos", 4101.00),
-	ARS("ARS", "Peso argentino", 264.37),
-    BOB("BOB", "Boliviano boliviano", 6.96),
-    BRL("BRL", "Real brasileño", 4.80),
-    CLP("CLP", "Peso chileno", 809.84),
-    CRC("CRC", "Colón costarricense", 545.03),
-    CUP("CUP", "Peso cubano", 24.00),
-    DOP("DOP", "Peso dominicano", 55.75),
-    GTQ("GTQ", "Quetzal guatemalteco", 7.73),
-    HNL("HNL", "Lempira hondureño", 23.83),
-    HTG("HTG", "Gourde haitiano", 98.43),
-    MXN("MXN", "Peso mexicano", 20.31),
-    NIO("NIO", "Córdoba nicaragüense", 35.09),
-    PAB("PAB", "Balboa panameño", 1.00),
-    PEN("PEN","Sol peruano ",4.09),
-    PYG("PYG","Guaraní paraguayo ",6855.00),
-    UYU("UYU","Peso uruguayo ",44.27),
-	JPY("JPY", "Yen japonés", 113.61),
-    GBP("GBP", "Libra esterlina", 0.75),
-    AUD("AUD", "Dólar australiano", 1.36),
-    CAD("CAD", "Dólar canadiense", 1.23),
-    CHF("CHF", "Franco suizo", 0.92),
-    CNY("CNY", "Yuan chino", 6.39),
-    HKD("HKD", "Dólar de Hong Kong", 7.78),
-    NZD("NZD", "Dólar neozelandés", 1.43),
-    SEK("SEK", "Corona sueca", 8.62),
-    KRW("KRW", "Won surcoreano", 1187.50),
-    SGD("SGD", "Dólar de Singapur", 1.34),
-    NOK("NOK", "Corona noruega", 8.53),
-    INR("INR", "Rupia india", 74.82),
-    RUB("RUB","Rublo ruso ",73.52),
-    ZAR("ZAR","Rand sudafricano ",15.08),
-    TRY("TRY","Lira turca ",9.43),
-    TWD("TWD","Nuevo dólar taiwanés ",28.44),
-    DKK("DKK","Corona danesa ",6.35),
-    PLN("PLN","Zloty polaco ",3.93),
-    THB("THB","Baht tailandés ",33.42),
-    IDR("IDR","Rupia indonesia ",14215.00),
-    HUF("HUF","Forint húngaro ",304.48),
-    CZK("CZK","Corona checa ",21.44),
-    ILS("ILS","Nuevo séquel israelí ",3.20),
-	AED("AED", "Dirham de los Emiratos Árabes Unidos", 3.67),
-    AFN("AFN", "Afghani de Afganistán", 77.06),
-    ALL("ALL", "Lek de Albania", 103.03),
-    AMD("AMD", "Dram de Armenia", 478.71),
-    ANG("ANG", "Florín de las Antillas Neerlandesas", 1.79),
-    AOA("AOA", "Kwanza de Angola", 642.06),
-    AWG("AWG", "Florín de Aruba", 1.79),
-    AZN("AZN", "Manat de Azerbaiyán", 1.70);
-	// Bing 13/07/2023
+	USD("USD", "Dólar estadounidense"), EUR("EUR", "Euro"), COP("COP", "Pesos Colombianos"),
+	ARS("ARS", "Peso argentino"), BOB("BOB", "Boliviano boliviano"), BRL("BRL", "Real brasileño"),
+	CLP("CLP", "Peso chileno"), CRC("CRC", "Colón costarricense"), CUP("CUP", "Peso cubano"),
+	DOP("DOP", "Peso dominicano"), GTQ("GTQ", "Quetzal guatemalteco"), HNL("HNL", "Lempira hondureño"),
+	HTG("HTG", "Gourde haitiano"), MXN("MXN", "Peso mexicano"), NIO("NIO", "Córdoba nicaragüense"),
+	PAB("PAB", "Balboa panameño"), PEN("PEN", "Sol peruano "), PYG("PYG", "Guaraní paraguayo "),
+	UYU("UYU", "Peso uruguayo "), JPY("JPY", "Yen japonés"), GBP("GBP", "Libra esterlina"),
+	AUD("AUD", "Dólar australiano"), CAD("CAD", "Dólar canadiense"), CHF("CHF", "Franco suizo"),
+	CNY("CNY", "Yuan chino"), HKD("HKD", "Dólar de Hong Kong"), NZD("NZD", "Dólar neozelandés"),
+	SEK("SEK", "Corona sueca"), KRW("KRW", "Won surcoreano"), SGD("SGD", "Dólar de Singapur"),
+	NOK("NOK", "Corona noruega"), INR("INR", "Rupia india"), RUB("RUB", "Rublo ruso "), ZAR("ZAR", "Rand sudafricano "),
+	TRY("TRY", "Lira turca "), TWD("TWD", "Nuevo dólar taiwanés "), DKK("DKK", "Corona danesa "),
+	PLN("PLN", "Zloty polaco "), THB("THB", "Baht tailandés "), IDR("IDR", "Rupia indonesia "),
+	HUF("HUF", "Forint húngaro "), CZK("CZK", "Corona checa "), ILS("ILS", "Nuevo séquel israelí "),
+	AED("AED", "Dirham de los Emiratos Árabes Unidos"), AFN("AFN", "Afghani de Afganistán"),
+	ALL("ALL", "Lek de Albania"), AMD("AMD", "Dram de Armenia"), ANG("ANG", "Florín de las Antillas Neerlandesas"),
+	AOA("AOA", "Kwanza de Angola"), AWG("AWG", "Florín de Aruba"), AZN("AZN", "Manat de Azerbaiyán");
 
 	private String codigo;
 	private String nombre;
 	private double tasaCambio;
+	private String url_str = "https://api.exchangerate.host/latest?base=USD";
+	private JSONObject dataRate;
 
-	private Monedas(String codigo, String nombre, double tasaCambio) {
+	private Monedas(String codigo, String nombre) {
 		this.codigo = codigo;
 		this.nombre = nombre;
-		this.tasaCambio = tasaCambio;
+		try {
+			this.tasaCambio = fileRate(codigo);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public String getCodigo() {
@@ -79,5 +62,55 @@ public enum Monedas {
 	@Override
 	public String toString() {
 		return codigo;
+	}
+
+	private double fileRate(String Code) throws IOException {
+		String fileName = "rate.json";
+		String encoding = "UTF-8";
+		File rate = new File("rate.json");
+		if (!rate.exists()) {
+			PrintWriter writer = new PrintWriter(fileName, encoding);
+			this.dataRate = allRate();
+			writer.println(this.dataRate);
+			writer.close();
+		} else {
+			FileTime fileTime = Files.getLastModifiedTime(rate.toPath());
+			LocalDateTime now = LocalDateTime.now();
+			LocalDateTime convertedFileTime = LocalDateTime.ofInstant(fileTime.toInstant(), ZoneId.systemDefault());
+			if (convertedFileTime.toLocalDate().equals(now.toLocalDate())) {
+				Scanner scanner = new Scanner(rate);
+				this.dataRate = new JSONObject(scanner.next());
+			} else {
+				PrintWriter writer = new PrintWriter(fileName, encoding);
+				this.dataRate = allRate();
+				writer.println(this.dataRate);
+				writer.close();
+			}
+		}
+		if (this.dataRate.get(Code).getClass().getSimpleName().equals("Integer")) {
+			System.out.println(this.dataRate.get(Code));
+			return (1.0 * (Integer) this.dataRate.get(Code));
+		} else {
+			return (double) ((BigDecimal) this.dataRate.get(Code)).doubleValue();
+		}
+
+	}
+
+	private JSONObject allRate() throws IOException {
+		@SuppressWarnings("deprecation")
+		URL url = new URL(this.url_str);
+		HttpURLConnection request = (HttpURLConnection) url.openConnection();
+		request.setRequestMethod("GET");
+		request.setRequestProperty("Content-Type", "application/json");
+		request.setRequestProperty("Accept", "application/json");
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(), "utf-8"))) {
+			StringBuilder response = new StringBuilder();
+			String responseLine = null;
+			while ((responseLine = br.readLine()) != null) {
+				response.append(responseLine.trim());
+			}
+			JSONObject rateJson = new JSONObject(response.toString());
+			return (JSONObject) rateJson.get("rates");
+		}
 	}
 }

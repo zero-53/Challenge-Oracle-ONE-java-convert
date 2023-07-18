@@ -178,7 +178,7 @@ public class app {
 		JPanel monedaPanel = new JPanel();
 
 		monedaPanel.setBounds(new Rectangle(0, 0, 500, 230));
-		// mainPanel.add(monedaPanel);
+		mainPanel.add(monedaPanel);
 
 		Box monedaPanelInterior = Box.createHorizontalBox();
 		monedaPanel.add(monedaPanelInterior);
@@ -280,7 +280,6 @@ public class app {
 
 		JPanel temperaturaPanel = new JPanel();
 		temperaturaPanel.setBounds(new Rectangle(0, 0, 500, 230));
-		mainPanel.add(temperaturaPanel);
 
 		Box gTemp = Box.createVerticalBox();
 		temperaturaPanel.add(gTemp);
