@@ -96,6 +96,14 @@ public enum Monedas {
 		return codigo;
 	}
 
+	/**
+	 * La función `fileRate` lee un archivo JSON que contiene tasas de cambio, verifica si el archivo está
+	 * actualizado y devuelve la tasa para un código de moneda dado.
+	 * 
+	 * @param Code El parámetro "Código" es una cadena que representa un código para una tarifa
+	 * específica.
+	 * @return El método devuelve un valor doble.
+	 */
 	private double fileRate(String Code) throws IOException, JSONException {
 		String fileName = "rate.json";
 		String encoding = "UTF-8";
@@ -127,6 +135,12 @@ public enum Monedas {
 		}
 	}
 
+	/**
+	 * La función `allRate()` envía una solicitud GET a una URL específica y recupera un objeto JSON que
+	 * contiene tipos de cambio.
+	 * 
+	 * @return El método devuelve un JSONObject que contiene las tarifas.
+	 */
 	private JSONObject allRate() throws IOException {
 		@SuppressWarnings("deprecation")
 		URL url = new URL(this.url_str);

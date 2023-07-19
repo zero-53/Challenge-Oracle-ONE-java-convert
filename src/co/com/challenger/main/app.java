@@ -33,6 +33,10 @@ import java.net.URISyntaxException;
  * La clase `app` representa la aplicación principal del conversor de unidades.
  * Proporciona una interfaz gráfica de usuario con opciones para convertir entre
  * diferentes unidades de medida, como moneda, temperatura, volumen, etc.
+ * 
+ * @author Amado León
+ * 
+ * @version 1.0.0
  */
 public class app {
 
@@ -76,8 +80,10 @@ public class app {
 	private void initialize() {
 		frmOracleNext = new Frame();
 		/*
-		 * //------ Menú ------------ // TODO: Futura implementación para nuevas
-		 * caracteristicas del menu principal y contextual
+		 * //------ Menú ------------ //
+		 * 
+		 * TODO: Futura implementación para nuevas caracteristicas del menu principal y
+		 * contextual
 		 * 
 		 * JPopupMenu popupMenu = new JPopupMenu(); popupMenu.setToolTipText("menu tt");
 		 * popupMenu.setLabel("menu"); popupMenu.setBackground(SystemColor.desktop);
@@ -115,8 +121,11 @@ public class app {
 		 * JMenu mnNewMenu_2 = new JMenu("Edición"); menuBar.add(mnNewMenu_2);
 		 * 
 		 * JMenuItem mntmNewMenuItem_4 = new JMenuItem("Copiar");
-		 * mnNewMenu_2.add(mntmNewMenuItem_4); // --------------------------
+		 * mnNewMenu_2.add(mntmNewMenuItem_4); }
+		 * 
+		 * --------------------------
 		 */
+
 		JPanel headerPanel = new JPanel();
 		frmOracleNext.getContentPane().add(headerPanel, BorderLayout.NORTH);
 		headerPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
@@ -272,8 +281,8 @@ public class app {
 		JLabel TitleMoneda2 = new JLabel(moneda2.getNombre());
 		gMoneda2Title.add(TitleMoneda2);
 
-		JComboBox selectMoneda1 = new JComboBox();
-		selectMoneda1.setModel(new DefaultComboBoxModel(Monedas.values()));
+		JComboBox<Object> selectMoneda1 = new JComboBox<Object>();
+		selectMoneda1.setModel(new DefaultComboBoxModel<Object>(Monedas.values()));
 		selectMoneda1.setSelectedIndex(0);
 		gMoneda1Data.add(selectMoneda1);
 
@@ -294,8 +303,8 @@ public class app {
 			}
 		});
 
-		JComboBox selectMoneda2 = new JComboBox();
-		selectMoneda2.setModel(new DefaultComboBoxModel(Monedas.values()));
+		JComboBox<Object> selectMoneda2 = new JComboBox<Object>();
+		selectMoneda2.setModel(new DefaultComboBoxModel<Object>(Monedas.values()));
 		selectMoneda2.setSelectedIndex(0);
 		gMoneda2Data.add(selectMoneda2);
 
@@ -359,8 +368,8 @@ public class app {
 		Temperatura tempOrigen = new Temperatura(temp[0].getNombre(), temp[0].getCodigo(), 0, temp[0]);
 		Temperatura tempDestino = new Temperatura(temp[0].getNombre(), temp[0].getCodigo(), 0, temp[0]);
 
-		JComboBox unidadOrigen = new JComboBox();
-		unidadOrigen.setModel(new DefaultComboBoxModel(Temperaturas.values()));
+		JComboBox<Object> unidadOrigen = new JComboBox<Object>();
+		unidadOrigen.setModel(new DefaultComboBoxModel<Object>(Temperaturas.values()));
 		gOrigen.add(unidadOrigen);
 
 		Box gDestino = Box.createVerticalBox();
@@ -371,8 +380,8 @@ public class app {
 		TextDestinoTemp.setHorizontalAlignment(SwingConstants.CENTER);
 		gDestino.add(TextDestinoTemp);
 
-		JComboBox unidadDestino = new JComboBox();
-		unidadDestino.setModel(new DefaultComboBoxModel(Temperaturas.values()));
+		JComboBox<Object> unidadDestino = new JComboBox<Object>();
+		unidadDestino.setModel(new DefaultComboBoxModel<Object>(Temperaturas.values()));
 		gDestino.add(unidadDestino);
 
 		Box gValor = Box.createVerticalBox();
@@ -528,42 +537,42 @@ public class app {
 		Color ct = Color.GREEN;
 		DecimalFormat format = new DecimalFormat("#.##");
 		double resultTemp;
-		if (!valor.equals("-") && !valor.equals("")) {
-			double tempVal = Double.parseDouble(valor);
-			resultTemp = tempVal;
-			if (origen.getNombre() != destino.getNombre()) {
-				if (origen.getNombre().equals("Celsius")) {
-					switch (destino.getNombre()) {
-					case "Fahrenheit":
-						resultTemp = (tempVal * 9 / 5) + 32;
-						break;
-					case "Kelvin":
-						resultTemp = tempVal + 273.15;
-						break;
-					}
-				} else if (origen.getNombre().equals("Fahrenheit")) {
-					switch (destino.getNombre()) {
-					case "Celsius":
-						resultTemp = (tempVal - 32) * 5 / 9;
-						break;
-					case "Kelvin":
-						resultTemp = (tempVal + 459.67) * 5 / 9;
-						break;
-					}
-				} else if (origen.getNombre().equals("Kelvin")) {
-					switch (destino.getNombre()) {
-					case "Celsius":
-						resultTemp = tempVal - 273.15;
-						break;
-					case "Fahrenheit":
-						resultTemp = (tempVal * 9 / 5) - 459.67;
-						break;
-					}
+		if (valor.equals("-") || valor.equals(".") || valor.equals("")) {
+			System.out.println(valor);
+			valor = "0";
+		}
+		double tempVal = Double.parseDouble(valor);
+		resultTemp = tempVal;
+		if (origen.getNombre() != destino.getNombre()) {
+			if (origen.getNombre().equals("Celsius")) {
+				switch (destino.getNombre()) {
+				case "Fahrenheit":
+					resultTemp = (tempVal * 9 / 5) + 32;
+					break;
+				case "Kelvin":
+					resultTemp = tempVal + 273.15;
+					break;
 				}
-
+			} else if (origen.getNombre().equals("Fahrenheit")) {
+				switch (destino.getNombre()) {
+				case "Celsius":
+					resultTemp = (tempVal - 32) * 5 / 9;
+					break;
+				case "Kelvin":
+					resultTemp = (tempVal + 459.67) * 5 / 9;
+					break;
+				}
+			} else if (origen.getNombre().equals("Kelvin")) {
+				switch (destino.getNombre()) {
+				case "Celsius":
+					resultTemp = tempVal - 273.15;
+					break;
+				case "Fahrenheit":
+					resultTemp = (tempVal * 9 / 5) - 459.67;
+					break;
+				}
 			}
-		} else {
-			resultTemp = 0;
+
 		}
 		if (resultTemp < 0) {
 			ct = Color.RED;
@@ -580,15 +589,12 @@ public class app {
 	}
 
 	private boolean validNumero(String valor) {
-		String regex = "^-?(\\d+)?(\\.{0,1}\\d+)?$";
+		String regex = "^-?(\\d+)?(\\.\\d*)?$";
 		return valor.matches(regex);
 	}
 
 	private boolean validNumeroPositivo(String num) {
-		if (validNumero(num)) {
-			return Double.parseDouble(num) >= 0;
-		} else {
-			return false;
-		}
+		String regex = "^(\\d+)?(\\.\\d*)?$";
+		return num.matches(regex);
 	}
 }
